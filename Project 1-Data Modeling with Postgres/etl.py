@@ -6,9 +6,9 @@ from sql_queries import *
 
 
 def process_song_file(cur, filepath):
-    # open song file
-    # it's typ not type
-    # convert_dates not convert_date
+    """
+    - Process all song files to insert the data to the table
+    """
     df = pd.DataFrame([pd.read_json(filepath, typ='series', convert_dates=False)])
 
     
@@ -26,7 +26,9 @@ def process_song_file(cur, filepath):
 
 
 def process_log_file(cur, filepath):
-    # open log file
+    """
+    - Process all log files to insert the data to the table
+    """
     df = pd.read_json(filepath, lines=True)
 
     # filter by NextSong action
@@ -59,9 +61,6 @@ def process_log_file(cur, filepath):
 
     # insert songplay records
     for index, row in df.iterrows():
-        
-        #print("song", row.song, row.artist, row.length)
-        
         # get songid and artistid from song and artist tables
         cur.execute(song_select, (row.song, row.artist, row.length))
         results = cur.fetchone()
@@ -73,12 +72,13 @@ def process_log_file(cur, filepath):
 
         # insert songplay record
         songplay_data = (row.ts, int(row.userId), row.level, songid, artistid, row.sessionId, row.location, row.userAgent)
-        #print("songplay_data", songplay_data)
         cur.execute(songplays_insert, songplay_data)
-# songplay_data (Timestamp('2018-11-29 00:00:57.796000'), '73', 'paid', None, None, 954, 'Tampa-St. Petersburg-Clearwater, FL', '"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_4) AppleWebKit/537.78.2 (KHTML, like Gecko) Version/7.0.6 Safari/537.78.2"')
+
 
 def process_data(cur, conn, filepath, func):
-    # get all files matching extension from directory
+    """
+    - Walk through the folder and get all files path
+    """
     all_files = []
     for root, dirs, files in os.walk(filepath):
         files = glob.glob(os.path.join(root,'*.json'))
