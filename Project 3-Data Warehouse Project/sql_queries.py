@@ -16,7 +16,8 @@ artist_table_drop = "DROP TABLE IF EXISTS artists;"
 time_table_drop = "DROP TABLE IF EXISTS time;"
 
 # CREATE TABLES
-
+# NOT NULL constraints should be used where applicable. Recommended to use it on columns acting as foreign keys to ensure they are not filled with nulls. 
+# You can handle the null values by adding an # filtering for NULL values on NOT NULL columns prior to insertion so that you receive no errors while insertion due to the NO NULL constraint
 staging_events_table_create= ("""CREATE TABLE IF NOT EXISTS staging_events(
                                  artist VARCHAR,
                                  auth VARCHAR,
@@ -55,11 +56,11 @@ staging_songs_table_create = ("""CREATE TABLE IF NOT EXISTS staging_songs(
 # https://docs.aws.amazon.com/redshift/latest/dg/Examples__compression_encodings_in_CREATE_TABLE_statements.html
 songplay_table_create = ("""CREATE TABLE IF NOT EXISTS songplays(
                             songplay_id INTEGER IDENTITY (1, 1) PRIMARY KEY,
-                            start_time TIMESTAMP,
-                            user_id INTEGER,
+                            start_time TIMESTAMP NOT NULL,
+                            user_id INTEGER NOT NULL,
                             level VARCHAR,
-                            song_id VARCHAR,
-                            artist_id VARCHAR,
+                            song_id VARCHAR NOT NULL,
+                            artist_id VARCHAR NOT NULL,
                             session_id VARCHAR,
                             location VARCHAR,
                             userAgent VARCHAR)

@@ -4,12 +4,18 @@ from sql_queries import copy_table_queries, insert_table_queries
 
 
 def load_staging_tables(cur, conn):
+    """
+    Loads data into staging_table from amazon
+    """
     for query in copy_table_queries:
         cur.execute(query)
         conn.commit()
 
 
 def insert_tables(cur, conn):
+    """
+    insert the data into the staging_tables
+    """
     for query in insert_table_queries:
         cur.execute(query)
         conn.commit()
