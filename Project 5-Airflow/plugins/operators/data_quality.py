@@ -8,7 +8,7 @@ class DataQualityOperator(BaseOperator):
     ui_color = '#89DA59'
 
     @apply_defaults
-    def __init__(self, conn_id="", tables=[] *args, **kwargs):
+    def __init__(self, conn_id="", tables=[], *args, **kwargs):
 
         super(DataQualityOperator, self).__init__(*args, **kwargs)
         # Map params here
@@ -19,7 +19,7 @@ class DataQualityOperator(BaseOperator):
         # redshift_hook = PostgresHook(postgres_conn_id = self.conn_id)
         
         for table in self.tables:
-            if CheckOperator(sql="SELECT * FROM {}".format{table}, conn_id=self.conn_id):
+            if CheckOperator(sql="SELECT * FROM {}".format(table), conn_id=self.conn_id):
                 self.log.info(f"Data quality check for table {table} not pass!")
             else:
                 self.log.info(f"Data quality check for table {table} pass!")

@@ -21,4 +21,4 @@ class LoadDimensionOperator(BaseOperator):
         redshift_hook.run(f"DELETE FROM {self.table_name}")
         # then create
         redshift_hook.run(self.query)
-        self.log.info(f"Dim table {self.table_name} loaded')
+        self.log.info(f"Dim table {self.table_name} loaded")

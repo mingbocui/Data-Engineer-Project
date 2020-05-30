@@ -2,8 +2,7 @@ from datetime import datetime, timedelta
 import os
 from airflow import DAG
 from airflow.operators.dummy_operator import DummyOperator
-from airflow.operators import (StageToRedshiftOperator, LoadFactOperator,
-                                LoadDimensionOperator, DataQualityOperator, CreateTableOperator)
+from airflow.operators import (StageToRedshiftOperator, LoadFactOperator, LoadDimensionOperator, DataQualityOperator, CreateTableOperator)
 from helpers import SqlQueries
 from airflow.operators.subdag_operator import SubDagOperator
 from dimension_SubDAG import dimension_SubDAG
@@ -75,22 +74,22 @@ load_songplays_table = LoadFactOperator(
 
 # Dim tables:
 # users table
-user_subdag = dimension_SubDAG(parent_dag=root_dag_name, task_id='Load_user_dim_table', conn_id="redshift", query=SqlQueries.user_table_insert, table_name="users")
+user_subdag = dimension_SubDAG(parent_dag=root_dag_name, task_id='Load_user_dim_table', conn_id="redshift", start_date=default_args['start_date'], query=SqlQueries.user_table_insert, table_name="users")
 load_user_dimension_table = SubDagOperator(subdag=user_subdag, task_id='Load_user_dim_table', dag=dag)
 # songs table
-song_subdag = dimension_SubDAG(parent_dag=root_dag_name, task_id='Load_song_dim_table', conn_id="redshift", query=SqlQueries.song_table_insert, table_name="songs")
+song_subdag = dimension_SubDAG(parent_dag=root_dag_name, task_id='Load_song_dim_table', conn_id="redshift", start_date=default_args['start_date'], query=SqlQueries.song_table_insert, table_name="songs")
 load_song_dimension_table = SubDagOperator(subdag=song_subdag, task_id='Load_song_dim_table', dag=dag)
 # artists table
-artist_subdag = dimension_SubDAG(parent_dag=root_dag_name, task_id='Load_artist_dim_table', conn_id="redshift", query=SqlQueries.artist_table_insert, table_name="artists")
+artist_subdag = dimension_SubDAG(parent_dag=root_dag_name, task_id='Load_artist_dim_table', conn_id="redshift", start_date=default_args['start_date'], query=SqlQueries.artist_table_insert, table_name="artists")
 load_artist_dimension_table = SubDagOperator(subdag=artist_subdag, task_id='Load_artist_dim_table', dag=dag)
 # time table
-time_subdag = dimension_SubDAG(parent_dag=root_dag_name, task_id='Load_time_dim_table', conn_id="redshift", query=SqlQueries.time_table_insert, table_name="time")
+time_subdag = dimension_SubDAG(parent_dag=root_dag_name, task_id='Load_time_dim_table', conn_id="redshift", start_date=default_args['start_date'], query=SqlQueries.time_table_insert, table_name="time")
 load_time_dimension_table = SubDagOperator(subdag=time_subdag, task_id='Load_time_dim_table', dag=dag)
 
 run_quality_checks = DataQualityOperator(
     task_id='Run_data_quality_checks',
     conn_id="redshift",
-    tables=["time", "users", "artists", "songplays", "songs"]
+    tables=["time", "users", "artists", "songplays", "songs"],
     dag=dag
 )
 

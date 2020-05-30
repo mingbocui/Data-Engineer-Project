@@ -17,11 +17,11 @@ class StageToRedshiftOperator(BaseOperator):
         self.aws_credential_id = aws_credential_id
         self.table_name = table_name
         self.s3_bucket = s3_bucket
-        self.s3_key = s3_kay
+        self.s3_key = s3_key
         self.file_format = file_format
         self.log_json_file = log_json_file
         self.execution_date = kwargs.get('execution_date')
-        self.copy_query = "COPY '{}' FROM '{}' ACCESS_KEY_ID '{}' SECRET_ACCESS_KEY '{}' FORMAT AS json '{}';\"
+        self.copy_query = "COPY '{}' FROM '{}' ACCESS_KEY_ID '{}' SECRET_ACCESS_KEY '{}' FORMAT AS json '{}';"
         
 
     def execute(self, context):
