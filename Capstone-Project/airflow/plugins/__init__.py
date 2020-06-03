@@ -9,5 +9,8 @@ import helpers
 class MyOwnPlugin(AirflowPlugin):
     name = "my_own_plugin"
     operators = [
-        operators.GenerateCsvOperator
+        operators.GenerateCsvOperator,
+        operators.CreateTableOperator,
+        operators.CopyInsertTableOperator,
+        operators.DataQualityOperator
     ]

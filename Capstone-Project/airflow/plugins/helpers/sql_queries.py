@@ -1,5 +1,6 @@
 class SqlQueries:
     
+    
     # immigration_data_sample.csv
     immigrations_table_create = """CREATE TABLE IF NOT EXISTS immigrations (
                                         cicid FLOAT PRIMARY KEY,
@@ -32,8 +33,9 @@ class SqlQueries:
                                         visatype VARCHAR
                                         );
                             """
-        # us-cities-demographics.csv
-        us_cities_demographics_table_create = """CREATE TABLE IF NOT EXISTS us_cities_demographics (
+      
+    # us-cities-demographics.csv
+    us_cities_demographics_table_create = """CREATE TABLE IF NOT EXISTS us_cities_demographics (
                                                 city VARCHAR,
                                                 state VARCHAR, 
                                                 median_age FLOAT, 
@@ -47,9 +49,9 @@ class SqlQueries:
                                                 race VARCHAR,
                                                 count INT
                                                 );
-                                                """
+                                          """
         # airport-codes_csv.csv
-        airport_table_create = """CREATE TABLE IF NOT EXISTS airport (
+    airport_table_create = """CREATE TABLE IF NOT EXISTS airport (
                                         ident            VARCHAR,
                                         type             VARCHAR,
                                         name             VARCHAR,
@@ -64,36 +66,36 @@ class SqlQueries:
                                         coordinates      VARCHAR
                                         )
                                         """
-        # i94visa.csv
-        i94visa_table_create = """CREATE TABLE IF NOT EXISTS i94visas(
+    # i94visa.csv
+    i94visa_table_create = """CREATE TABLE IF NOT EXISTS i94visas(
                                     code INT PRIMARY KEY,
                                     visa VARCHAR
                                     );
                                 """
 
-        # i94port.csv
-        i94port_table_create = """CREATE TABLE IF NOT EXISTS i94port(
+    # i94port.csv
+    i94port_table_create = """CREATE TABLE IF NOT EXISTS i94port(
                                     code VARCHAR PRIMARY KEY,
                                     port VARCHAR
                                     );
                                 """
         
-        # i94mode.csv
-        i94mode_table_create = """CREATE TABLE IF NOT EXISTS i94mode(
+    # i94mode.csv
+    i94mode_table_create = """CREATE TABLE IF NOT EXISTS i94mode(
                                     code VARCHAR PRIMARY KEY,
                                     model VARCHAR
                                     );
                                 """
 
-        # i94cit.csv
-        i94cit_table_create = """CREATE TABLE IF NOT EXISTS i94cit(
+    # i94cit.csv
+    i94cit_table_create = """CREATE TABLE IF NOT EXISTS i94cit(
                                     code VARCHAR PRIMARY KEY,
                                     country VARCHAR
                                     );
                                 """
         
-        # i94addr.csv
-        i94addr_table_create = """CREATE TABLE IF NOT EXISTS i94addr(
+    # i94addr.csv
+    i94addr_table_create = """CREATE TABLE IF NOT EXISTS i94addr(
                                     code VARCHAR PRIMARY KEY,
                                     address VARCHAR
                                     );

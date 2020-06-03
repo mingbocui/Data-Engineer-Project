@@ -6,9 +6,9 @@ class CreateTableOperator(BaseOperator):
     
     ui_color = '#89DD00'
     @apply_defaults
-    def __init__(self, conn_id="", sql_query_path=None, *args, **kwargs):
+    def __init__(self, redshift_conn_id="", sql_query_path=None, *args, **kwargs):
         super(CreateTableOperator, self).__init__(*args, **kwargs)
-        self.conn_id = conn_id
+        self.redshift_conn_id = redshift_conn_id
         if sql_query_path is None:
             self.sql_query_path = "/home/workspace/airflow/create_tables.sql"
         else:
@@ -17,7 +17,8 @@ class CreateTableOperator(BaseOperator):
     
     # contents of the context dict https://bcb.github.io/airflow/execute-context
     def execute(self, context):
-        redshift_hook = PostgreHook(postgres_conn_id = self.conn_id)
+        self.log.info("Ready for creating tables!")
+        redshift_hook = PostgreHook(postgres_conn_id = self.redshift_conn_id)
         redshift_hook(self.create_table_queries)
         self.log.info("Tables are created successfully!")
         
