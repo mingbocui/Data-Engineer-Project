@@ -3,24 +3,24 @@
 ## Project Summary
 This project focus on researching the tourism behaviors among the cities that non-immigrants visited and the cities demographics. We will process tha raw data and create relational database to store these data better.
 
-## Pipeline
-This project aims to establish a whole pipeline to create tables from raw data. Some source files was exsisted in the format of `.sas` and can not be processed directly. The whole pipeline is listed as following steps:
-- upload file to s3 bucket;
-- extract sas data to csv and store data in s3 bucket;
-- create tables in redshift;
-- copy or insert data from csv to tables;
-- data quality check.
+## Datasets & Sources
 
-## Data Description & Sources
-`I94 Immigration Data`: contains international visitor arrival statistics by world regions and select countries (including top 20), type of visa, mode of transportation, age groups, states visited (first intended address only), and the top ports of entry (for select countries).  
+- I94 Immigration Data: This data comes from the US National Tourism and Trade Office found [here](https://travel.trade.gov/research/reports/i94/historical/2016.html). Each report contains international visitor arrival statistics by world regions and select countries (including top 20), type of visa, mode of transportation, age groups, states visited (first intended address only), and the top ports of entry (for select countries).
 
-`U.S. City Demographic Data`: contains information about the demographics of all US cities and census-designated places with a population greater or equal to 65,000.  
+- U.S. City Demographic Data: This dataset contains information about the demographics of all US cities and census-designated places with a population greater or equal to 65,000. Dataset comes from OpenSoft found [here](https://public.opendatasoft.com/explore/dataset/us-cities-demographics/export/).
 
-`Airport Code Table`: contains the list of many airport codes in the world.  
+- Airport Code Table: This is a simple table of airport codes and corresponding cities. The airport codes may refer to either IATA airport code, a three-letter code which is used in passenger reservation, ticketing and baggage-handling systems, or the ICAO airport code which is a four letter code used by ATC systems and for airports that do not have an IATA airport code (from wikipedia). It comes from [here](https://datahub.io/core/airport-codes#data).
 
-`I94_SAS_Labels_Descriptions.SAS` file: contains various immigration codes, need to be processed and stored in S3 bucket
+## Motivations to build a Data Lake on S3:
+- Easy access;
+- Flexible design;
+- Run peroidly with airflow, enable online analysis.
 
-## Tables Description
+## Table designs
+
+### Motivations
+To faciliate the access of the data, we decide to create a relational database, and normalize the tables to save sapce. Our model will be composed of one fact tables and several dimension tables.
+
 
 ### Fact Table 
 #### immigrations
@@ -32,7 +32,7 @@ This project aims to establish a whole pipeline to create tables from raw data. 
 | i94mon |FLOAT | Numeric month | 
 | i94cit| FLOAT | City |
 | i94res | FLOAT | Country code |
-|  i94port | VARCHAR | Airport code |
+| i94port | VARCHAR | Airport code |
 | arrdate  | FLOAT | Arrival Date in the USA |
 | i94mode  | FLOAT | Mode to access |
 | i94addr  |VARCHAR | State code |
@@ -129,20 +129,15 @@ This project aims to establish a whole pipeline to create tables from raw data. 
 | count | INT | number
 
 
- 
+## ETL Pipeline DAG
 
-## Data Storage
+This project aims to establish a whole pipeline to create tables from raw data. Some source files was exsisted in the format of `.sas` and can not be processed directly. The whole pipeline is listed as following steps:
+- upload file to s3 bucket;
+- extract sas data to csv and store data in s3 bucket;
+- create tables in redshift;
+- copy or insert data from csv to tables;
+- data quality check.
 
-Data was stored in S3 buckets in a collection of CSV and PARQUET files. The immigration dataset extends to several million rows and thus this dataset was converted to PARQUET files to allow for easy data manipulation and processing through Dask and the ability to write to Redshift.
-
-
-
-
-
-
-
-
-## DAG
 The DAG created for the pipeline is:  
 ![](./images/dag.PNG)
 
