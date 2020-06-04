@@ -16,10 +16,11 @@ This project focus on researching the tourism behaviors among the cities that no
 - Flexible design;
 - Run peroidly with airflow, enable online analysis.
 
-## Table designs
+## Data Dictionary
 
-### Motivations
+### Data Model Justifications
 To faciliate the access of the data, we decide to create a relational database, and normalize the tables to save sapce. Our model will be composed of one fact tables and several dimension tables.
+More details will be illustracted in following data dictionaries.
 
 
 ### Fact Table 
@@ -175,6 +176,22 @@ Once you've entered these values, select Save.
 ![](./images/cluster-details.png)
 ![](./images/connection-redshift.png)
 
+## Used Tools and Technologies
+- upload file to S3 bucket;
+- Process data directly on S3 and store the processed data in S3 bucket;
+- create Redshift cluster and create tables;
+- Load data from S3 to Redshift;
+- Establish a data pipeline in Airflow to serialzie above operations by personalizing operators
+
+## Other Scenarios
+- The data was increased by 100x
+If the data was enlarged by 100x, the bottleneck would be our redshift cluster size, we may need to create more nodes. We may also need to partition the dada by time or other key, which ensures the even distribution of data.
+
+- The pipelines would be run on a daily basis by 7 am every day.
+This problem could be solved by scheduling the Airflow to start regularly, it also can store some statistics of previous result.
+
+- The database needed to be accessed by 100+ people.
+The more people accessing the database the more cpu resources you need to get a fast experience. By using a distributed database we can improve our replications and partitioning to get faster query results for each user.
 
 
 ## Usage:
